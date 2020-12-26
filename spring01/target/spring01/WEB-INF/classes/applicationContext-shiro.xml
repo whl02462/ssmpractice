@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<description>Shiro 框架核心配置文件</description>
+	<!-- 对于 Shiro 框架来说，整个认证流程通过 SecurityManager 这个对象来负责进行监控 [BEGIN] -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 如果一个用户未进行认证，设定使用哪个流程进行登录，负责登录的 Bean 称之为认证域 -->
+		<property name="realm" ref="shiroDBRealm"/>
+	</bean>
+	<!-- 对于 Shiro 框架来说，整个认证流程通过 SecurityManager 这个对象来负责进行监控 [END] -->
+
+	<!-- 设定 Shiro 对于不同 URL 请求的验证规则 [BEGIN] -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 依赖注入 Shiro 核心对象 SecurityManager -->
+		<property name="securityManager" ref="securityManager"/>
+		<!-- 如果该用户未登录，那么需要重定向到登录界面，设定重定向地址 -->
+		<property name="loginUrl" value="/user/login"/>
+		<!-- 如果在登录之前没有设定明确的访问 URL，那么设定登录后默认的请求地址 -->
+		<property name="successUrl" value="/"/>
+		<!-- 对于不同的 URL 请求设定不同的认证规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+				<!-- 对于静态资源，不需要进行认证 -->
+				<!-- anon 规则表示该 URL 不需要登录，即可访问 -->
+				/static/** = anon
+				/user/register = anon
+				<!-- logout 规则进行退出操作，那么 Shiro 会自动进行退出流程 -->
+				/user/logout = logout
+				<!-- authc 规则表示这个 URL 请求必须经过登录认证 -->
+				/** = authc
+			</value>
+		</property>
+	</bean>
+	<!-- 设定 Shiro 对于不同 URL 请求的验证规则 [END] -->
+
+	<!-- 整个 Shiro 过滤器生命周期，采用自己的生命周期 [BEGIN] -->
+	<bean id="lifecycleBean" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+	<!-- 整个 Shiro 过滤器生命周期，采用自己的生命周期 [BEGIN] -->
+</beans>

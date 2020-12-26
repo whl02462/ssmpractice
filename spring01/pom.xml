@@ -20,6 +20,7 @@
 		<mybatis-spring.version>2.0.6</mybatis-spring.version>
 		<druid.version>1.2.4</druid.version>
 		<jackson-databind.version>2.12.0</jackson-databind.version>
+		<shiro-spring.version>1.7.0</shiro-spring.version>
 	</properties>
 
 	<dependencies>
@@ -91,6 +92,13 @@
 			<version>1.2</version>
 		</dependency>
 		<!-- 配置 Servlet、JSP 和 JSTL 依赖关系 [END] -->
+		<!-- 配置安全认证框架 Shiro 和 Spring 结合的依赖关系 [BEGIN] -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro-spring.version}</version>
+		</dependency>
+		<!-- 配置安全认证框架 Shiro 和 Spring 结合的依赖关系 [END] -->
 
 
 

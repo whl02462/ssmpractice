@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/mvc
+							http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+	<!-- 开启 SpringMVC 注解扫描机制 [BEGIN] -->
+	<mvc:annotation-driven/>
+
+	<!-- 配置注解扫描基础包位置 [BEGIN] -->
+	<context:component-scan base-package="cn.ekgc.amp">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	</context:component-scan>
+
+	<!-- 配置 SpringMVC 转发视图解析器 [BEGIN] -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 设定转发的前缀 -->
+		<property name="prefix" value="/WEB-INF/view/"/>
+		<!-- 设定转发的后缀 -->
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+	<!-- 配置返回json的视图解析器-->
+	<bean id="messageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="defaultCharset" value="UTF-8"/>
+		<property name="supportedMediaTypes">
+			<value>application/json;charset=utf-8</value>
+		</property>
+	</bean>
+
+	<!-- 过滤静态资源 [BEGIN] -->
+	<mvc:default-servlet-handler/>
+</beans>
